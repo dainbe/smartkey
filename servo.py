@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 import time
 
-GPIO.setmode(GPIO.BOARD)
+GPIO.setmode(GPIO.BOARD)#BOARDにするとPIN番号指定
 
 #PIN12を制御パルスの出力に設定
 gp_out = 12
@@ -30,6 +30,8 @@ GPIO.setup(led1_out,GPIO.OUT)
 GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
 
+#私の家のサムターンは+90°で開いて-90°で閉まる
+#180°サーボの場合デューティー比が2.5=-90°くらい 12=+90°くらい
 def open(): #鍵を開けるやつ
     GPIO.setup(gp_out,GPIO.OUT)
     time.sleep(0.5)
