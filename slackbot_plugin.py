@@ -1,5 +1,5 @@
 #coding:utf-8
-# -*- coding: utf-8 -*-
+
 from slackbot.bot import respond_to, listen_to
 import re
 
@@ -16,15 +16,6 @@ GPIO.setmode(GPIO.BOARD)
 gp_out = 12
 GPIO.setup(gp_out,GPIO.OUT)
 
-sw1_in=13
-sw2_in=15
-sw3_in=19
-reed=21
-GPIO.setup(sw1_in,GPIO.IN)
-GPIO.setup(sw2_in,GPIO.IN)
-GPIO.setup(sw3_in,GPIO.IN)
-GPIO.setup(reed,GPIO.IN)
-
 led1_out=22 #赤
 led2_out=24 #青
 led3_out=26 #緑
@@ -33,6 +24,7 @@ GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
 
 servo = GPIO.PWM(gp_out, 50)
+servo.start(0)
 
 def open(): #鍵を開けるやつ
     GPIO.setup(gp_out,GPIO.OUT)
@@ -72,7 +64,7 @@ def close(): #鍵を閉めるやつ
 
 #botの設定
 
-# 「カギ開けて」「解錠して」等に反応するようにします
+# 「カギ開けて」「解錠して」等に反応するように
 @listen_to(u'(鍵|カギ)+.*(開|あけ|空け)+')
 @listen_to(u'(解錠)+')
 @listen_to('(open)+.*(door)+')
@@ -88,17 +80,17 @@ def openKeyOrder(message,*something):
         open()
 
         message.reply(u'わかりました。解錠します。')
-        # 命令を出したユーザ名を取得することもできます。
+        # 命令を出したユーザ名を取得する。
         userID = message.channel._client.users[message.body['user']][u'name']
         print (userID + "さんの命令でカギを開けます")
 
     else:
         message.reply(u'鍵が開いているようです。')
-        # 命令を出したユーザ名を取得することもできます。
+        # 命令を出したユーザ名を取得する。
         userID = message.channel._client.users[message.body['user']][u'name']
         print (userID + 'さんが鍵を開けようとしました。')
 
-# 「鍵閉めて」「施錠」等の場合はこちら
+# 「鍵閉めて」「施錠」等の場合
 @listen_to(u'(鍵|カギ)+.*(閉|しめ|締め)+')
 @listen_to(u'(施錠)+')
 @listen_to('(lock)+.*(door)+')
@@ -113,12 +105,12 @@ def closeKeyOrder(message,*something):
         close()
 
         message.reply(u'わかりました。施錠します。')
-        # 命令を出したユーザ名を取得することもできます。
+        # 命令を出したユーザ名を取得する。
         userID = message.channel._client.users[message.body['user']][u'name']
         print (userID + "さんの命令でカギを閉めます")
 
     else:
         message.reply(u'鍵が閉まっているようです。')
-        # 命令を出したユーザ名を取得することもできます。
+        # 命令を出したユーザ名を取得する。
         userID = message.channel._client.users[message.body['user']][u'name']
         print (userID + "さんが鍵を閉めようとしました。")
