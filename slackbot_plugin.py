@@ -6,6 +6,7 @@ import re
 import RPi.GPIO as GPIO
 import time
 
+global lock
 lock=0
 
 #BOARDでpinで指定
@@ -48,6 +49,9 @@ def open(): #鍵を開けるやつ
 
     GPIO.cleanup(gp_out)
 
+    global lock
+    lock=0
+
 def close(): #鍵を閉めるやつ
     GPIO.setup(gp_out,GPIO.OUT)
     time.sleep(0.5)
@@ -62,6 +66,9 @@ def close(): #鍵を閉めるやつ
     time.sleep(0.5)
 
     GPIO.cleanup(gp_out)
+
+    global lock
+    lock=1
 
 #botの設定
 
@@ -79,7 +86,6 @@ def openKeyOrder(message,*something):
         GPIO.output(led3_out,0)
         GPIO.output(led2_out,1)
         open()
-        lock=0
 
         message.reply(u'わかりました。解錠します。')
         # 命令を出したユーザ名を取得することもできます。
@@ -105,7 +111,6 @@ def closeKeyOrder(message,*something):
         GPIO.output(led1_out,GPIO.HIGH)
         GPIO.setup(gp_out,GPIO.OUT)
         close()
-        lock=1
 
         message.reply(u'わかりました。施錠します。')
         # 命令を出したユーザ名を取得することもできます。
