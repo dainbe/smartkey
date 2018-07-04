@@ -1,5 +1,4 @@
 #coding:utf-8
-# -*- coding: utf-8 -*-
 from slackbot.bot import respond_to, listen_to
 import re
 
