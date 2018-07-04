@@ -9,6 +9,7 @@ import time
 #BOARDでpinで指定
 GPIO.setmode(GPIO.BOARD)
 
+global lock
 lock=0
 
 #PIN12を制御パルスの出力に設定
@@ -45,7 +46,8 @@ def open(): #鍵を開けるやつ
     time.sleep(0.5)
 
     GPIO.cleanup(gp_out)
-
+    
+    global lock
     lock=0
 
 def close(): #鍵を閉めるやつ
@@ -62,7 +64,8 @@ def close(): #鍵を閉めるやつ
     time.sleep(0.5)
 
     GPIO.cleanup(gp_out)
-
+    
+    global lock
     lock=1
 
 #botの設定
