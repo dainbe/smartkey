@@ -32,7 +32,7 @@ GPIO.setup(led3_out,GPIO.OUT)
 def open(): #鍵を開けるやつ
     GPIO.setup(gp_out,GPIO.OUT)
     time.sleep(0.5)
-
+#自分の家の鍵はこの向きなので合わせて適宜変更を
     servo.ChangeDutyCycle(7.25)
     time.sleep(0.5)
 
