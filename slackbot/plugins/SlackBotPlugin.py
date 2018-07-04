@@ -16,13 +16,6 @@ lock=0
 gp_out = 12
 GPIO.setup(gp_out,GPIO.OUT)
 
-sw1_in=13
-sw2_in=19
-reed=21
-GPIO.setup(sw1_in,GPIO.IN)
-GPIO.setup(sw2_in,GPIO.IN)
-GPIO.setup(reed,GPIO.IN)
-
 led1_out=15 #赤
 led2_out=16 #青
 led3_out=18 #緑
@@ -67,6 +60,8 @@ def close(): #鍵を閉めるやつ
     
     global lock
     lock=1
+
+servo.start(0)
 
 #botの設定
 
