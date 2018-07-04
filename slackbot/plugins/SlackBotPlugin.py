@@ -16,9 +16,9 @@ lock=0
 gp_out = 12
 GPIO.setup(gp_out,GPIO.OUT)
 
-led1_out=15 #赤
-led2_out=16 #青
-led3_out=18 #緑
+led1_out=22 #赤
+led2_out=24 #青
+led3_out=26 #緑
 GPIO.setup(led1_out,GPIO.OUT)
 GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
