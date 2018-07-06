@@ -23,6 +23,7 @@ GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
 
 servo = GPIO.PWM(gp_out, 50)
+servo.start(0)
 
 def open(): #鍵を開けるやつ
     GPIO.setup(gp_out,GPIO.OUT)
@@ -68,10 +69,8 @@ servo.start(0)
 @listen_to(u'(鍵|カギ)+.*(開|あけ|空け)+')
 @listen_to(u'(解錠)+')
 @listen_to('(open)+.*(door)+')
-@respond_to(u'(鍵|カギ)+.*(開|あけ|空け)+')
-@respond_to(u'(解錠)+')
-@respond_to(u'(open)+.*(door)+')
-@respond_to('鍵開けて')
+@listen_to("(扉|とびら|トビラ)+.*(開|あけ|空け)+")
+@listen_to("(開け|ひらけ|ヒラケ)+.*(塩|しお)")
 def openKeyOrder(message, *something):
     if  lock==1:
         GPIO.output(led1_out,0)
@@ -93,10 +92,8 @@ def openKeyOrder(message, *something):
 # 「鍵閉めて」「施錠」等の場合はこちら
 @listen_to(u'(鍵|カギ)+.*(閉|しめ|締め)+')
 @listen_to(u'(施錠)+')
-@listen_to('(lock)+.*(door)+')
-@respond_to(u'(鍵|カギ)+.*(閉|しめ|締め)+')
-@respond_to(u'(施錠)+')
-@respond_to(u'(lock)+.*(door)+')
+@listen_to('(lock)+.*(door)+')N
+@listen_to("(扉|とびら|トビラ)+.*(閉|しめ|締め)+")
 def closeKeyOrder(message, *something):
     if  lock==0:
         GPIO.output(led2_out,GPIO.LOW)
