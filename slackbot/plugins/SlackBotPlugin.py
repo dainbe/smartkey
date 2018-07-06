@@ -92,7 +92,7 @@ def openKeyOrder(message, *something):
 # 「鍵閉めて」「施錠」等の場合はこちら
 @listen_to(u'(鍵|カギ)+.*(閉|しめ|締め)+')
 @listen_to(u'(施錠)+')
-@listen_to('(lock)+.*(door)+')N
+@listen_to('(lock)+.*(door)+')
 @listen_to("(扉|とびら|トビラ)+.*(閉|しめ|締め)+")
 def closeKeyOrder(message, *something):
     if  lock==0:
