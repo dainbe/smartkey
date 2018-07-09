@@ -1,0 +1,13 @@
+pin     no
+11      17  sw1
+16      23  sw2
+24    SCLK  reed
+26      cs1 led3
+24      25  led2
+31      6   led1
+33      13  pwm1 #servo.py
+35      19  pwm1 #slackbotplugin.py
+
+Red : ( 5 – 2 ) / 0.02 = 150Ω   300
+Green : ( 5 – 3.6 ) / ( ( 2000 / 2500 ) * 0.02 ) = 240Ω 500
+Blue : ( 5 – 3.6 ) / ( ( 2000 / 7000 ) * 0.02 ) = 91Ω 200
