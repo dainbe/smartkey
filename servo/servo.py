@@ -97,8 +97,8 @@ try:
             GPIO.output(led1_out,0)
             GPIO.output(led2_out,0)
             GPIO.output(led3_out,1)
-
-                        while True:
+            
+            while True:
                 if GPIO.input(sw2_in)==1:
                     GPIO.output(led3_out,0)
                     break
