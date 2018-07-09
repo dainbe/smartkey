@@ -107,8 +107,10 @@ try:
                     close()
                     auto=1
 
-                else :
+                elif GPIO.input(reed)==0 and auto==1:
                     auto=0
+                else :
+                    pass
         else:
 
             pass
