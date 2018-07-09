@@ -97,28 +97,21 @@ try:
             GPIO.output(led1_out,0)
             GPIO.output(led2_out,0)
             GPIO.output(led3_out,1)
-            
             while True:
-                if GPIO.input(sw2_in)==1:
-                    GPIO.output(led3_out,0)
-                    break
-
-                elif GPIO.input(reed)==1 and auto==0:
-                    time.sleep(3)
-                    close()
-                    auto=1
-
-                elif GPIO.input(reed)==0 and auto==1:
-                    auto=0
-
-                elif GPIO.input(sw1_in)==1 and lock==1:
+                if GPIO.input(sw1_in)==1 and lock==1:
                     open()
 
                 elif GPIO.input(sw1_in)==1 and lock==0:
                     close()
-
-                else :
-                    pass
+                elif GPIO.input(sw2_in)==1:
+                        GPIO.output(led3_out,0)
+                        break
+                elif GPIO.input(reed)==1 and auto==0 and lock==0:
+                        time.sleep(3)
+                        close()
+                        auto=1
+                elif GPIO.input(reed)==0 and auto==1:
+                    auto=0
 
         else:
 
