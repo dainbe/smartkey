@@ -27,6 +27,8 @@ url = "https://api.twitter.com/1.1/statuses/update.json"
 twitter = OAuth1Session(CK, CS, AT, AS)
 time_stamp=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
+auto=1
+
 #サーボの設定
 GPIO.setmode(GPIO.BOARD)
 
