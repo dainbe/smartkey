@@ -104,7 +104,7 @@ try:
                         close()
                         auto=1
 
-                elif GPIO.input(sw2_in)==1:
+                elif GPIO.input(sw2_in)==1 or GPIO.input(sw1_in)==1:
                     GPIO.output(led3_out,0)
                     break
 
