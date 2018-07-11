@@ -2,6 +2,7 @@
 rasperry piでスマートロックを作成するためのもの
 osはraspbian-stretch
 slackbotをinstall
-slackbot/plugins/__init__.py　の空のファイルを別途作成
+slackbot/plugins/__init__.py　空のファイルを別途作成
 
-servo.pyはボタンでサーボを制御できるがslack経由で制御すると変数の受け渡しを考慮しなくてもよいので楽
+servo.pyはボタンでサーボを制御できるがpost.pyのほうでslack経由で制御すると変数の受け渡しを考慮しなくてもよいので楽
+twitterにも投稿する用にしている。
