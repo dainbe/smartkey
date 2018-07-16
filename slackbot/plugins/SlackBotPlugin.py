@@ -1,5 +1,4 @@
 #coding:utf-8
-# -*- coding: utf-8 -*-
 from slackbot.bot import respond_to, listen_to
 import re
 
@@ -13,19 +12,12 @@ global lock
 lock=0
 
 #PIN12を制御パルスの出力に設定
-gp_out = 32
+gp_out = 33
 GPIO.setup(gp_out,GPIO.OUT)
 
-sw1_in=13
-sw2_in=15
-reed=16
-GPIO.setup(sw1_in,GPIO.IN)
-GPIO.setup(sw2_in,GPIO.IN)
-GPIO.setup(reed,GPIO.IN)
-
-led1_out=22 #赤
-led2_out=26 #青
-led3_out=24 #緑
+led1_out=31 #赤
+led2_out=22 #青
+led3_out=26 #緑
 GPIO.setup(led1_out,GPIO.OUT)
 GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
