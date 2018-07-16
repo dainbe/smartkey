@@ -23,8 +23,8 @@ AS = 'hoeghoehgoehgoehgoehgoehgoehgoehgoehgoehgoehgoehgoe'         # Accesss Tok
 
 # ツイート投稿用のURL
 url = "https://api.twitter.com/1.1/statuses/update.json"
-
 twitter = OAuth1Session(CK, CS, AT, AS)
+
 time_stamp=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
 
 global lock
@@ -34,16 +34,16 @@ auto=1
 #サーボの設定
 GPIO.setmode(GPIO.BOARD)
 
-sw1_in=13
-sw2_in=15
-reed=16
+sw1_in=11
+sw2_in=16
+reed=21
 GPIO.setup(sw1_in,GPIO.IN)
 GPIO.setup(sw2_in,GPIO.IN)
 GPIO.setup(reed,GPIO.IN)
 
-led1_out=22 #赤
-led2_out=26 #青
-led3_out=24 #緑
+led1_out=31 #赤
+led2_out=22 #青
+led3_out=26 #緑
 GPIO.setup(led1_out,GPIO.OUT)
 GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
