@@ -2,11 +2,11 @@
 pin     no
 11      17  sw1
 16      23  sw2
-21    SCLK  reed
+23    SCLK  reed
 26      cs1 led3
 22      25  led2
 31      6   led3
-35      19  pwm
+33      13  pwm
 
 #抵抗の計算
 Red : ( 5 – 2 ) / 0.02 = 150Ω   300
