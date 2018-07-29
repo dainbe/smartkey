@@ -5,7 +5,7 @@ pin     no
 23    SCLK  reed
 26      cs1 led3
 22      25  led2
-31      6   led3
+31      6   led1
 33      13  pwm
 
 #抵抗の計算
