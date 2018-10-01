@@ -115,22 +115,29 @@ try:
             GPIO.output(led1_out,0)
             GPIO.output(led2_out,0)
             GPIO.output(led3_out,1)
+  
             while True:
+                time.sleep(0.5)
+
                 if GPIO.input(sw1_in)==1 and lock==1:
                     open_key()
 
                 elif GPIO.input(sw1_in)==1 and lock==0:
                     close_key()
-                elif GPIO.input(sw2_in)==1:
-                        GPIO.output(led3_out,0)
-                        break
-                elif GPIO.input(reed)==1 and auto==0 and lock==0:
-                        time.sleep(3)
-                        close_key()
-                        auto=1
-                elif GPIO.input(reed)==0 and auto==1:
+
+                elif GPIO.input(reed)==0 and auto==0:#開けたとき
+                    auto=1
+
+                elif GPIO.input(reed)==1 and auto==1: #閉めたとき
+                    close_key()
                     auto=0
 
+                elif GPIO.input(sw2_in)==1:
+                    GPIO.output(led3_out,0)
+                    break
+
+                else :
+                    auto=0
         else:
 
             pass
