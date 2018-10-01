@@ -7,6 +7,13 @@ from datetime import datetime
 import time
 from slacker import Slacker
 
+try:
+    with open('lock.txt',mode='x') as f:
+        f.write('1')
+except FileExistsError:
+    pass
+
+
 #slackの投稿の設定
 # API token
 token = 'hogehogehogehogheoghoeghoehgoehgoehgoehgoeh'
@@ -48,18 +55,22 @@ GPIO.setup(led1_out,GPIO.OUT)
 GPIO.setup(led2_out,GPIO.OUT)
 GPIO.setup(led3_out,GPIO.OUT)
 
-def open(): #鍵を開けるやつ
+def open_key(): #鍵を開けるやつ
     time_stamp=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     slacker.chat.post_message(c_name, '鍵開けて\n' + time_stamp, as_user=True)
-    global lock
-    lock=0
+   
+    with open('lock.txt',mode='w') as f:
+        f.write('0')
+      
     print ("鍵を開けました。\n" + time_stamp)
 
-def close():
+def close_key():
     time_stamp=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     slacker.chat.post_message(c_name, '鍵閉めて\n'+ time_stamp, as_user=True)
-    global lock
-    lock=1
+   
+    with open('lock.txt',mode='w') as f:
+        f.write('1')
+
     print ("鍵を閉めました\n" + time_stamp)
 
 def LED():#LEDが光るだけのやつだから要らない
@@ -85,12 +96,19 @@ params = {"status": "起動しました。\n"+ time_stamp}
 req = twitter.post(url, params = params)
 
 try:
-    while True:
+     while True:
+        with open('lock.txt',mode='r') as f:
+            for row in f:
+               key=int(row.strip())
+               print(key)
+               global lock
+               lock=key
+
         if GPIO.input(sw1_in)==1 and lock==1:
-            open()
+            open_key()
 
         elif GPIO.input(sw1_in)==1 and lock==0:
-            close()
+            close_key()
 
         elif GPIO.input(sw2_in)==1:
             #自動で閉まる
@@ -99,16 +117,16 @@ try:
             GPIO.output(led3_out,1)
             while True:
                 if GPIO.input(sw1_in)==1 and lock==1:
-                    open()
+                    open_key()
 
                 elif GPIO.input(sw1_in)==1 and lock==0:
-                    close()
+                    close_key()
                 elif GPIO.input(sw2_in)==1:
                         GPIO.output(led3_out,0)
                         break
                 elif GPIO.input(reed)==1 and auto==0 and lock==0:
                         time.sleep(3)
-                        close()
+                        close_key()
                         auto=1
                 elif GPIO.input(reed)==0 and auto==1:
                     auto=0
