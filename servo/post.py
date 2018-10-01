@@ -41,8 +41,8 @@ auto=1
 #サーボの設定
 GPIO.setmode(GPIO.BOARD)
 
-sw1_in=11
-sw2_in=16
+sw1_in=17
+sw2_in=23
 reed=21
 GPIO.setup(sw1_in,GPIO.IN)
 GPIO.setup(sw2_in,GPIO.IN)
@@ -58,19 +58,16 @@ GPIO.setup(led3_out,GPIO.OUT)
 def open_key(): #鍵を開けるやつ
     time_stamp=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     slacker.chat.post_message(c_name, '鍵開けて\n' + time_stamp, as_user=True)
-   
-    with open('lock.txt',mode='w') as f:
-        f.write('0')
-      
+    global lock
+    lock=0
     print ("鍵を開けました。\n" + time_stamp)
 
 def close_key():
     time_stamp=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     slacker.chat.post_message(c_name, '鍵閉めて\n'+ time_stamp, as_user=True)
-   
-    with open('lock.txt',mode='w') as f:
-        f.write('1')
-
+    
+    global lock
+    lock=1
     print ("鍵を閉めました\n" + time_stamp)
 
 def LED():#LEDが光るだけのやつだから要らない
@@ -97,12 +94,6 @@ req = twitter.post(url, params = params)
 
 try:
      while True:
-        with open('lock.txt',mode='r') as f:
-            for row in f:
-               key=int(row.strip())
-               print(key)
-               global lock
-               lock=key
 
         if GPIO.input(sw1_in)==1 and lock==1:
             open_key()
