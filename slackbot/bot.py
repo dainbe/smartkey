@@ -55,7 +55,7 @@ if lock==1:
 else:
     GPIO.output(led2_out,1)
 
-def door_button():
+def check_button():
      while True:
             with open('/home/pi/slackbot/lock.txt',mode='r') as f:
                 for row in f:
@@ -96,7 +96,7 @@ def door_button():
 def main():
     bot = Bot()
     # ボタン監視用のスレッドを起動する
-    th_me = threading.Thread(target=door_button, name="th_check_button")
+    th_me = threading.Thread(target=check_button, name="th_check_button")
     th_me.setDaemon(True)
     th_me.start()
     try:
