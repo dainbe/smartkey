@@ -2,17 +2,28 @@
 from slackbot.bot import respond_to, listen_to
 import re
 import RPi.GPIO as GPIO
-import time
-
+from slacker import Slacker
 import sys
 sys.path.append('../')
 from servo_settings import open_key,close_key
+from slackbot_settings import API_TOKEN
+
+token = API_TOKEN
+master_name = "自分のuserID"
+slacker = Slacker(token)
 
 global lock
 
 root_user = []
 instant_user = []
 
+try: #もしファイルがなかったらつくる。
+    with open('/home/pi/slackbot/list.txt', mode='x') as f:
+        f.write('自分のuserName')
+except FileExistsError:
+    pass
+
+#root_userのリストに
 with open("/home/pi/slackbot/list.txt","r") as f:
     for i in f:
         root_user.append(i.rstrip("\n"))
@@ -21,14 +32,16 @@ print (root_user)
 
 #botの設定
 
-@listen_to(u'(鍵|カギ)+.*(開け|あけ|空け)+')
-@listen_to(u'(解錠)+')
-@listen_to('(open)+.*(door)+')
+@respond_to(u'(鍵|カギ|かぎ)+.*(開け|あけ|空け)+')
+@respond_to(u'(解錠)+')
+@respond_to('(open)+.*(door)+')
+@respond_to(u'(扉|トビラ|とびら)+.*(開け|あけ|空け)+')
+@respond_to(u'(ひらけ|開け)+.*(ゴマ|ごま)+')
 def openKeyOrder(message, *something):
-    userID = message.channel._client.users[message.body['user']][u'name']
-    message.reply(userID)
+    userName = message.channel._client.users[message.body['user']][u'name']
+    #message.reply(userName)
 
-    if userID in root_user or userID in instant_user:
+    if userName in root_user or userName in instant_user:
         with open('/home/pi/slackbot/lock.txt',mode='r') as f:
             for row in f:
                 key=int(row.strip())
@@ -37,31 +50,29 @@ def openKeyOrder(message, *something):
         if  lock==1:
 
             message.reply(u'わかりました。解錠します。')
-            # 命令を出したユーザ名を取得することもできます。
-            userID = message.channel._client.users[message.body['user']][u'name']
-
             open_key()
 
-            print (userID + "さんの命令でカギを開けます")
+            print (userName + "さんの命令でカギを開けます。")
+            #自分あてに通知
+            slacker.chat.post_message(master_name, userName + "さんの命令でカギを開けます。", as_user=True)
+
 
         else:
             message.reply(u'鍵が開いているようです。')
-            # 命令を出したユーザ名を取得することもできます。
-            userID = message.channel._client.users[message.body['user']][u'name']
-            print (userID + "さんが鍵を開けようとしました。")
 
     else:
         message.reply("You don't have permission")
+        slacker.chat.post_message(master_name, userName + "さんが鍵を開けようとしました。", as_user=True)
 
 # 「鍵閉めて」「施錠」等の場合はこちら
-@listen_to(u'(鍵|カギ)+.*(閉め|しめ|締め|占め)+')
-@listen_to(u'(施錠)+')
-@listen_to('(lock)+.*(door)+')
+@respond_to(u'(鍵|カギ)+.*(閉め|しめ|締め|占め)+')
+@respond_to(u'(施錠)+')
+@respond_to('(lock)+.*(door)+')
 def closeKeyOrder(message, *something):
-    userID = message.channel._client.users[message.body['user']][u'name']
-    message.reply(userID)
+    userName = message.channel._client.users[message.body['user']][u'name']
+    #message.reply(userName)
 
-    if userID in root_user or userID in instant_user:
+    if userName in root_user or userName in instant_user:
         with open('/home/pi/slackbot/lock.txt',mode='r') as f:
             for row in f:
                 key=int(row.strip())
@@ -70,28 +81,24 @@ def closeKeyOrder(message, *something):
         if  lock==0:
 
             message.reply(u'わかりました。施錠します。')
-            # 命令を出したユーザ名を取得することもできます。
-            userID = message.channel._client.users[message.body['user']][u'name']
-
             close_key()
 
-            print (userID + "さんの命令でカギを閉めます")
+            print (userName + "さんの命令でカギを閉めます。")
+            slacker.chat.post_message(master_name, userName + "さんの命令でカギを閉めます。", as_user=True)
 
         else:
             message.reply(u'鍵が閉まっているようです。')
-            # 命令を出したユーザ名を取得することもできます。
-            userID = message.channel._client.users[message.body['user']][u'name']
-            print (userID + "さんが鍵を閉めようとしました。")
 
     else:
         message.reply("You don't have permission")
+        slacker.chat.post_message(master_name, userName + "さんが鍵を閉めようとしました。", as_user=True)
 
-@listen_to("add (.*) to (.*)")
+@respond_to("add (.*) to (.*)")
 def add_list_order(message,user,add_list):
-    userID = message.channel._client.users[message.body['user']][u'name']
+    userName = message.channel._client.users[message.body['user']][u'name']
     append_user = user
     root = "root"
-    if userID in root_user: #投稿者がrootかどうか
+    if userName in root_user: #投稿者がrootかどうか
         if append_user in root_user:#追加するユーザーがすでにいるか
             message.reply(user+" already added")
 
@@ -107,12 +114,12 @@ def add_list_order(message,user,add_list):
     else:
         message.reply("You don't have permission")
 
-@listen_to("rm (.*) to (.*)")
+@respond_to("rm (.*) to (.*)")
 def rm_instant_order(message,user,rm_list):
-    userID = message.channel._client.users[message.body['user']][u'name']
+    userName = message.channel._client.users[message.body['user']][u'name']
     rm_user = user
     root = "root"
-    if userID in root_user:
+    if userName in root_user:
         if rm_user in root_user:
             message.reply("removed "+rm_list+" to "+user)
             exec(rm_list+"_user.remove(rm_user)")
