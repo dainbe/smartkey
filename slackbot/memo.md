@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #raspberrypiのpinと基盤の対応
 pin     no
 11      17  sw1
@@ -17,7 +16,6 @@ Blue : ( 5 – 3.6 ) / ( ( 2000 / 7000 ) * 0.02 ) = 91Ω 200
 #材料
 http://www.aitendo.com/product/17064 #基盤
 http://akizukidenshi.com/catalog/g/gI-02476/ #LED
-=======
 #raspberrypiのpinと基盤の対応
 pin     no
 11      17  sw1
@@ -36,4 +34,3 @@ Blue : ( 5 – 3.6 ) / ( ( 2000 / 7000 ) * 0.02 ) = 91Ω 200
 #材料
 http://www.aitendo.com/product/17064 #基盤
 http://akizukidenshi.com/catalog/g/gI-02476/ #LED
->>>>>>> origin/master
